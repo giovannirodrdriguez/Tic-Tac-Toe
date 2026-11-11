@@ -16,29 +16,39 @@ struct ContentView: View {
                 .font(.title)
                 .bold()
             
-    LazyVGrid(columns: Array(repeating: GridItem(.fixed(120)), count: 3)) {
-        ForEach(0..<9, id: \.self) { index in
-            ZStack {
-                    Color.blue
-                    Text(moves[index])
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
+            LazyVGrid(columns: Array(repeating: GridItem(.fixed(120)), count: 3)) {
+                ForEach(0..<9, id: \.self) { index in
+                    ZStack {
+                        Color.blue
+                        Color.white.opacity(moves[index] == "" ? 1 : 0)
+                        Text(moves[index])
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                    }
+                    .frame(width: 120, height: 120)
+                    .cornerRadius(30)
+                    .onTapGesture {
+                        withAnimation {
+                            if moves[index] == "" {
+                                moves[index] = xTurn ? "X" : "O"
+                                xTurn.toggle()
+                            }
+                        }
+                    }
+                    .rotation3DEffect(
+                        .degrees(moves[index] == "" ? 180 : 0),
+                        axis: (x: 0, y: 1, z: 0)
+                    )
                 }
-                .frame(width: 120, height: 120)
-                .cornerRadius(30)
-                .onTapGesture {
-                    moves[index] = xTurn ? "X" : "O"
-                    xTurn.toggle()
                 
-                }
-            
-              }
             }
+            
+            .padding()
         }
-        .padding()
     }
 }
+    #Preview {
+        ContentView()
+    }
 
-#Preview {
-    ContentView()
-}
+
