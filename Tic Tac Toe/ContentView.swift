@@ -8,12 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var moves = ["", "", "", "", "", "", "", "", ""]
+    @State private var xTurn = true
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Tic Tac Toe")
+                .font(.title)
+                .bold()
+            
+    LazyVGrid(columns: Array(repeating: GridItem(.fixed(120)), count: 3)) {
+        ForEach(0..<9, id: \.self) { index in
+            ZStack {
+                    Color.blue
+                    Text(moves[index])
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                }
+                .frame(width: 120, height: 120)
+                .cornerRadius(30)
+                .onTapGesture {
+                    moves[index] = xTurn ? "X" : "O"
+                    xTurn.toggle()
+                
+                }
+            
+              }
+            }
         }
         .padding()
     }
