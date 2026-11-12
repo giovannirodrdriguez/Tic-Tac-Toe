@@ -18,6 +18,7 @@ struct ContentView: View {
                 .font(.title)
                 .bold()
             
+            
             LazyVGrid(columns: Array(repeating: GridItem(.fixed(120)), count: 3)) {
                 ForEach(0..<9, id: \.self) { index in
                     ZStack {
@@ -49,7 +50,15 @@ struct ContentView: View {
         .padding()
         .preferredColorScheme(.dark)
         .alert(isPresented: $gameOver) {
-            Alert(title: Text(winMessage))
+            Alert(
+                title: Text(winMessage),
+                dismissButton: .default(Text("Play Again")) {
+                    withAnimation {
+                        moves = ["", "", "", "", "", "", "", "", ""]
+                        gameOver = false
+                    }
+                }
+            )
         }
         .onChange(of: moves) {
             checkForWinner()
@@ -66,7 +75,7 @@ struct ContentView: View {
         checkLine(a: 2, b: 4, c: 6)
     }
     private func checkLine(a: Int, b: Int, c: Int) {
-        if moves[0] != "" && moves[0] == moves[1] && moves[1] == moves[2] {
+        if moves[a] != "" && moves[a] == moves[b] && moves[b] == moves[c] {
             winMessage = "\(moves[0]) is the winner!"
             gameOver = true
         }
